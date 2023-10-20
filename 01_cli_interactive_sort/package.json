@@ -1,0 +1,20 @@
+{
+  "name": "interactive-sort",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaqpy/serverless-academy.git"
+  },
+  "author": "Anton Mykolenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaqpy/serverless-academy/issues"
+  },
+  "homepage": "https://github.com/gaqpy/serverless-academy#readme",
+  "description": ""
+}
