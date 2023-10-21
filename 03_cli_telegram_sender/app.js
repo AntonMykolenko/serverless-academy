@@ -10,14 +10,14 @@ const bot = new TelegramBot(token, { polling: true });
 const program = new Command();
 
 program
-    .command("message")
+    .command("send-message")
     .description("send message to bot")
     .argument("<string>", "message to send")
     .action((message) => {
         bot.sendMessage(chatID, message);
     });
 program
-    .command("image")
+    .command("send-photo")
     .description("send image to bot")
     .argument("<string>", "path to photo")
     .action((pathToPhoto) => {
