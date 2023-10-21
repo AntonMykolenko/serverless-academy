@@ -1,0 +1,25 @@
+{
+  "name": "03_cli_telegram_sender",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaqpy/serverless-academy.git"
+  },
+  "author": "Anton Mykolenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaqpy/serverless-academy/issues"
+  },
+  "homepage": "https://github.com/gaqpy/serverless-academy#readme",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "node-telegram-bot-api": "^0.63.0"
+  }
+}
