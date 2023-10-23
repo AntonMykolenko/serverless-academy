@@ -1,0 +1,23 @@
+{
+  "name": "06_instagram_giveaway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaqpy/serverless-academy.git"
+  },
+  "author": "Anton Mykolenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaqpy/serverless-academy/issues"
+  },
+  "homepage": "https://github.com/gaqpy/serverless-academy#readme",
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
+}
