@@ -1,9 +1,13 @@
 
 export default class arraySorting {
     alphabeticSort(words) {
-        const sortedWords = words.sort();
+        const sortedWords = words.slice(); 
+        sortedWords.sort((a, b) => {
+            return a.toLowerCase().localeCompare(b.toLowerCase());
+        });
         return sortedWords;
     }
+    
 
     smallestToBiggest(digits){
         const sortedDigits = digits.sort((a, b) => a - b);
