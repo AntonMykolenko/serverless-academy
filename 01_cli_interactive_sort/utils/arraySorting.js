@@ -1,11 +1,10 @@
 
 export default class arraySorting {
     alphabeticSort(words) {
-        const sortedWords = words.slice(); 
-        sortedWords.sort((a, b) => {
+        words.sort((a, b) => {
             return a.toLowerCase().localeCompare(b.toLowerCase());
         });
-        return sortedWords;
+        return words;
     }
     
 
