@@ -24,7 +24,7 @@ function restart() {
                 "\n4. Sort words by quantity of letters" +
                 "\n5. Show only unique words" +
                 "\n6. Show only unique elements (words and digits)" +
-                "\n Type exit to and all operations" +
+                "\n Type exit to end all operations" +
                 "\n\n Select from 1 to 6 and press Enter: ",
                 (selection) => {
                     switch (selection) {
