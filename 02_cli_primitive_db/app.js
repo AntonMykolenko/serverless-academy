@@ -63,8 +63,6 @@ function addNewUser() {
           .then(function (question) {
             if (question.SearchChoice === "Yes") {
               fs.readFile("db.txt", "utf-8", (error, data) => {
-                data = JSON.parse(data);
-                console.log(data);
                 if (error) {
                   console.log("Error while writing data to File");
                 }
