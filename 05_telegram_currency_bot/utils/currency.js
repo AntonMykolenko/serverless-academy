@@ -14,7 +14,16 @@ const loadData = (filename, content) => {
   fs.writeFileSync(filename, JSON.stringify(content), "utf8");
 }
 
-const getMono = async() => {
+const isMonobankApiWorking = async () => {
+  try {
+    await axios.get(MONO_API_URL);
+    return true; 
+  } catch (error) {
+    return false; 
+  }
+}
+
+const getMono = async () => {
   const { data: currenciesInfo } = await axios.get(MONO_API_URL);
   const currencyRates = {};
   currenciesInfo.forEach((currencyInfo) => {
@@ -53,13 +62,19 @@ const getPrivat = async () => {
 }
 
 const getExchange = async () => {
-  try {
-    const privatRates = await getPrivat();
-    const monoRates = await getMono();
-    const exchangeRates = Object.assign(privatRates, monoRates);
-    loadData(DBNAME, exchangeRates);
-    return exchangeRates;
-  } catch (err) {
+  const isMonobankWorking = await isMonobankApiWorking();
+
+  if (isMonobankWorking) {
+    try {
+      const privatRates = await getPrivat();
+      const monoRates = await getMono();
+      const exchangeRates = Object.assign(privatRates, monoRates);
+      loadData(DBNAME, exchangeRates);
+      return exchangeRates;
+    } catch (err) {
+      return getData(DBNAME); 
+    }
+  } else {
     return getData(DBNAME);
   }
 }
@@ -67,13 +82,13 @@ const getExchange = async () => {
 export const getUsdMessage = async () => {
   const { monoUsdSell, monoUsdBuy, privatUsdSell, privatUsdBuy } =
     await getExchange();
-  const messageString = `MonoBank : USD/UAH Sell: ${monoUsdSell}, Buy: ${monoUsdBuy}\nPrivatBank: USD/UAH Sell: ${privatUsdSell}, Buy: ${privatUsdBuy}`;
+  const messageString = `MonoBank: USD/UAH Sell: ${monoUsdSell}, Buy: ${monoUsdBuy}\nPrivatBank: USD/UAH Sell: ${privatUsdSell}, Buy: ${privatUsdBuy}`;
   return messageString;
 }
 
 export const getEurMessage = async () =>  {
   const { monoEurSell, monoEurBuy, privatEurSell, privatEurBuy } =
     await getExchange();
-  const messageString = `MonoBank : EUR/UAH Sell: ${monoEurSell}, Buy: ${monoEurBuy}\nPrivatBank: EUR/UAH Sell: ${privatEurSell}, Buy: ${privatEurBuy}`;
+  const messageString = `MonoBank: EUR/UAH Sell: ${monoEurSell}, Buy: ${monoEurBuy}\nPrivatBank: EUR/UAH Sell: ${privatEurSell}, Buy: ${privatEurBuy}`;
   return messageString;
 }
