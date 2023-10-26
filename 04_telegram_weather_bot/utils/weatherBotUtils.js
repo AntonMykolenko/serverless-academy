@@ -17,7 +17,7 @@ const kelvinToCelsius = (kelvin) => {
     return Math.round(kelvin - 273.15);
 };
 
-function getWeatherByCity(city, skipEven) {
+const getWeatherByCity = (city, skipEven) => {
     const link = 'https://api.openweathermap.org/data/2.5/forecast';
     const params = {
         lat: cityCoords[city].lat,
@@ -56,7 +56,7 @@ function getWeatherByCity(city, skipEven) {
         });
 }
 
-function prettifyDate(dateStr) {
+const prettifyDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleString('en-us', { weekday: 'long' }) + ', ' +
         date.toLocaleString('en-us', { month: 'long' }) + ' ' +
