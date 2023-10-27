@@ -25,7 +25,7 @@ bot.onText(/\/start/, (msg) => {
 });
 
 bot.onText(/(Go back to main menu)/, (msg) => {
-    bot.sendMessage(msg.chat.id, "Choose option", {
+    bot.sendMessage(msg.chat.id, "Choose city", {
         reply_markup: JSON.stringify(keyboard),
     });
 });

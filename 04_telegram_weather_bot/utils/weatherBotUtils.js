@@ -7,10 +7,7 @@ dotenv.config();
 const apiKey = process.env.API_KEY;
 
 const cityCoords = {
-    Kyiv: { lat: 50.45, lon: 30.542 },
-    Lviv: { lat: 49.843, lon: 24.0311 },
-    Kharkiv: { lat: 49.98, lon: 36.23 },
-    Odessa: { lat: 46.48, lon: 30.73 },
+    Kyiv: { lat: 50.45, lon: 30.542 }
 };
 
 const kelvinToCelsius = (kelvin) => {
@@ -64,42 +61,44 @@ const prettifyDate = (dateStr) => {
 }
 
 const weather = (bot, keyboard = null) => {
+    const cities = Object.keys(cityCoords).map(city => [{ text: city }]);
+    const cityKeyboard = cities.slice(0, 7);
+    const cityRegx = new RegExp(`^${cityKeyboard.map(city => city[0].text).join('|')}$`);
+
     bot.onText(/(\/forecast|Get weather forecast)/, (msg) => {
-        const intervals = ['Every 3 hours', 'Every 6 hours'];
-        const intervalKeyboard = intervals.map(interval => [{ text: interval }]);
-        const intervalOptions = {
+        const cityOptions = {
             reply_markup: JSON.stringify({
-                keyboard: intervalKeyboard,
+                keyboard: cityKeyboard,
             }),
         };
-        bot.sendMessage(msg.chat.id, 'Choose interval', intervalOptions);
+        bot.sendMessage(msg.chat.id, 'Choose city', cityOptions);
 
-        bot.onText(/^Every 3|6 hours$/, (intervalMsg) => {
-            const skipEven = intervalMsg.text === 'Every 6 hours';
-
-            const cities = Object.keys(cityCoords).map(city => [{ text: city }]);
-            const cityKeyboard = cities.slice(0, 7);
-            const cityOptions = {
+        bot.onText(cityRegx, (cityMsg) => {
+            const intervals = ['Every 3 hours', 'Every 6 hours'];
+            const intervalKeyboard = intervals.map(interval => [{ text: interval }]);
+            const intervalOptions = {
                 reply_markup: JSON.stringify({
-                    keyboard: cityKeyboard,
+                    keyboard: intervalKeyboard,
                 }),
             };
-            bot.sendMessage(msg.chat.id, 'Choose city', cityOptions);
+            bot.sendMessage(msg.chat.id, 'Choose interval', intervalOptions);
 
-            const cityRegx = new RegExp(`^${cityKeyboard.map(city => city[0].text).join('|')}$`);
-            bot.onText(cityRegx, (cityMsg) => {
+            const intervalRegx = /^Every (3|6) hours$/;
+            bot.onText(intervalRegx, (intervalMsg) => {
+                const skipEven = intervalMsg.text === 'Every 6 hours';
                 getWeatherByCity(cityMsg.text, skipEven).then((res) => {
                     bot.sendMessage(msg.chat.id, res, {
                         reply_markup: JSON.stringify({
-                            hide_keyboard: true
+                            hide_keyboard: true,
                         }),
-                        parse_mode: 'HTML'
+                        parse_mode: 'HTML',
                     });
+                    bot.removeTextListener(intervalRegx);
                 });
-                bot.removeTextListener(cityRegx);
             });
-            bot.removeTextListener(/^Every 3|6 hours$/);
+            bot.removeTextListener(cityRegx);
         });
     });
 };
+
 export default weather;
