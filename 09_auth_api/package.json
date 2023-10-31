@@ -1,0 +1,22 @@
+{
+  "name": "09_auth_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "start": "npx ts-node ./server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaqpy/serverless-academy.git"
+  },
+  "author": "Anton Mykolenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaqpy/serverless-academy/issues"
+  },
+  "homepage": "https://github.com/gaqpy/serverless-academy#readme",
+  "dependencies": {
+    "uuidv4": "^6.2.13"
+  }
+}
