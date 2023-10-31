@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 declare global {
     namespace Express {
         interface Request {
-            user?: string; // Only the email as a string
+            user?: string; 
         }
     }
 }
