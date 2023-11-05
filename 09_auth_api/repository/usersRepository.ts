@@ -2,11 +2,10 @@ import { Pool } from 'pg';
 import { User } from '../schemas/userSchema';
 
 
-
 export class UsersRepository {
     private pool: Pool;
     constructor() {
-        this.pool = new Pool({ connectionString: process.env.DATABASE_LINK || "postgresql://postgres:123qwe456@localhost:5432/postgres" })
+        this.pool = new Pool({ connectionString: "postgresql://postgres:123qwe456@localhost:5432/postgres" })
     }
 
     public async createUser(user: User) {
