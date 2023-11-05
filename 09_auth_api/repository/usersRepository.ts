@@ -1,8 +1,7 @@
 import { Pool } from 'pg';
-import dotenv from 'dotenv';
 import { User } from '../schemas/userSchema';
 
-dotenv.config();
+
 
 export class UsersRepository {
     private pool: Pool;
