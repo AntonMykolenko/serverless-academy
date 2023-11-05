@@ -2,11 +2,9 @@ import { UsersRepository } from "../repository/usersRepository";
 import { User } from "../schemas/userSchema";
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
-dotenv.config();
 const saltRounds = 10;
 
 export class AuthController {

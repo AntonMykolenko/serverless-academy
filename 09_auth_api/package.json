@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "start": "npx ts-node ./server.ts"
+    "server": "npx ts-node ./server.ts",
+    "start": "set JWT_SECRET='anton' && set TOKEN_TTL='60s' && set DB_LINK='postgresql://postgres:123qwe456@localhost:5432/authAPI' && set PORT=3000 && npm run server"
   },
   "repository": {
     "type": "git",

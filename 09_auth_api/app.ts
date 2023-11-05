@@ -1,9 +1,7 @@
 import express from 'express';
-import { config } from 'dotenv';
 import { AuthRoutes } from './routes/authRoutes';
 import { UsersRoutes } from './routes/userRoutes';
 
-config();
 
 const app = express();
 

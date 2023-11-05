@@ -9,6 +9,6 @@ export class UsersRoutes {
 
     constructor(path: string) {
         (this.router = Router()),(this.path = path),(this.usersController = new UsersController());
-        this.router.post('/me', verifyTokenMiddleware ,this.usersController.getUser);
+        this.router.get('/me', verifyTokenMiddleware ,this.usersController.getUser);
     }
 }
