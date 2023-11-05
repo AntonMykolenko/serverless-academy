@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx ts-node ./server.ts"
+    "server": "npx ts-node ./server.ts",
+    "start": "set PORT=3000 && npm run server"
   },
   "repository": {
     "type": "git",
