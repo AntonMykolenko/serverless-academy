@@ -1,0 +1,14 @@
+{
+    "name": "sign-in",
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "build": "tsc --noEmit && esbuild src/index.ts --bundle --platform=node --format=cjs --outfile=build/index.js",
+        "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@types/node": "^20.8.10",
+        "@types/aws-lambda": "^8.10.125",
+        "sst": "^2.34.7"
+    }
+}

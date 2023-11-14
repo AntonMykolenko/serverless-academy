@@ -1,0 +1,30 @@
+{
+  "name": "short-linker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sst dev",
+    "build": "sst build",
+    "deploy": "sst deploy",
+    "remove": "sst remove",
+    "console": "sst console",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.2",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/uuid": "^9.0.6",
+    "aws-cdk-lib": "2.101.1",
+    "constructs": "10.2.69",
+    "sst": "^2.34.7",
+    "typescript": "^5.2.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.449.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

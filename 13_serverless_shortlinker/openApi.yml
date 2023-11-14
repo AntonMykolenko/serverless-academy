@@ -1,0 +1,323 @@
+openapi: 3.0.0
+info:
+  title: Shortlinker API
+  version: 1.0.0
+
+servers:
+  -url: https://2qo6kvfrsa.execute-api.eu-west-1.amazonaws.com
+  description: Link to the API
+
+securitySchemes:
+  tokenQueryParam:
+    type: apiKey
+    in: query
+    name: token
+
+paths:
+  /auth/sign-in:
+    post:
+      summary: Sign In
+      operationId: signIn
+      requestBody:
+        description: User credentials for signing in
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Successful sign-in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Bad request or user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+  /auth/sign-up:
+    post:
+      summary: Sign Up
+      operationId: signUp
+      requestBody:
+        description: User details for signing up
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Successful sign-up
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Bad request or user already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string               
+  /links/short-link:
+    post:
+      summary: Create Short Link
+      operationId: createShortLink
+      requestBody:
+        description: Data for creating a short link
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                link:
+                  type: string
+                expiresIn:
+                  type: string
+              required:
+                - link
+                - expiresIn
+      responses:
+        '200':
+          description: Short link created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  link:
+                    type: string
+                  shortLink:
+                    type: string
+        '400':
+          description: Bad request or invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+      security:
+        - tokenQueryParam: [exampleJwt]               
+  /links/link-d:
+    post:
+      summary: Deactivate Link
+      operationId: deactivateLink
+      requestBody:
+        description: Data for deactivating a link
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+      responses:
+        '200':
+          description: Link deactivated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request or missing parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+      security:
+        - tokenQueryParam: [exampleJwt]                
+  /links/links-by-user:
+    post:
+      summary: Get Links by User
+      operationId: getLinksByUser
+      responses:
+        '200':
+          description: Links retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    link:
+                      type: string
+                    expiresIn:
+                      type: string
+                    createdOn:
+                      type: string
+                    endDate:
+                      type: string
+                    email:
+                      type: string
+                    status:
+                      type: string
+                    linkStats:
+                      type: number
+        '400':
+          description: Bad request or no links found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+      security:
+        - tokenQueryParam: [exampleJwt]              
+  /{id}:
+    get:
+      summary: Get Link by ID
+      operationId: getLinkById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the link to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Link retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  link:
+                    type: string
+        '400':
+          description: Bad request or link doesn't exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  body:
+                    type: string
+      security:
+        - tokenQueryParam: [exampleJwt]              
+                  
