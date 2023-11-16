@@ -1,4 +1,4 @@
-import { StackContext, Api, use, Cron, Function, Auth } from "sst/constructs";
+import { StackContext, Api, use, Function, Auth } from "sst/constructs";
 import { StorageStack } from "./StorageStack";
 
 export function API({ stack }: StackContext) {
@@ -33,6 +33,8 @@ export function API({ stack }: StackContext) {
   shortLink.bind([linksTable]);
   shortLink.attachPermissions(["dynamodb:FullAccess"]);
   shortLink.attachPermissions(["dynamodb:GetItem"]);
+  shortLink.attachPermissions(["events:PutEvents"]);
+  shortLink.attachPermissions(["scheduler:CreateSchedule"]);
 
   const shortLinkD = new Function(stack, "shortLinkD", {
     runtime: "container",
@@ -77,14 +79,6 @@ export function API({ stack }: StackContext) {
     api,
     prefix: "/links",
   });
-
-  const cron = new Cron(stack, "Cron", {
-    schedule: "rate(10 minutes)",
-    job: expLinks,
-  });
-  cron.attachPermissions(["lambda:InvokeFunction"]);
-  cron.attachPermissions(["dynamodb:Scan"]);
-  cron.bind([linksTable]);
 
   stack.addOutputs({
     ApiEndpoint: api.url,

@@ -1,9 +1,9 @@
 import AWS from "aws-sdk";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import crypto from "crypto";
-
 import jwt, { JwtPayload } from "jsonwebtoken";
 
+const Scheduler = new AWS.Scheduler();
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 async function getUniqueShortUrl(dynamoDb: AWS.DynamoDB.DocumentClient, tableName: string, email: string): Promise<string> {
@@ -83,7 +83,7 @@ export async function handler(event: APIGatewayProxyEvent) {
         };
     }
 
-    let endDate;
+    let endDate, endDateSchedule;
 
     if (expiresIn === "one-time link") {
         endDate = "one-time link";
@@ -113,7 +113,38 @@ export async function handler(event: APIGatewayProxyEvent) {
     };
 
     try {
-        await dynamoDb.put(dbData).promise();
+        if (dbData.Item.expiresIn !== "one-time link") {
+            Scheduler.createSchedule(
+                {
+                    ScheduleExpression: `at(${endDate.slice(0, 19)})`,
+                    Name: shortUrl,
+                    Description: "Scheduler for deleting short link",
+                    FlexibleTimeWindow: {
+                        Mode: 'OFF',
+                    },
+                    ActionAfterCompletion: 'DELETE',
+                    Target: {
+                        Arn: "arn:aws:lambda:eu-west-1:422412222410:function:anton-short-linker-API-expLinksBC657F0E-KYCNT4i7EQCM",
+                        RoleArn: "arn:aws:iam::422412222410:role/anton-short-linker-API-expLinksServiceRoleB387774F-H7fZwiOWTZT9",
+                        Input: JSON.stringify({
+                            EventBridgeParameters: [
+                                {
+                                    id: shortUrl,
+                                    email: email,
+                                },
+                            ],
+                        }),
+                    },
+                }
+            ).promise().catch((error) => {
+                console.log("Error while creating scheduler:", error);
+                throw error;
+            });
+
+        }
+        await dynamoDb.put(dbData).promise().catch((error) => {
+            console.log("Error while putting data to DynamoDB:", error);
+        });
 
         const returnData = {
             link: link,
