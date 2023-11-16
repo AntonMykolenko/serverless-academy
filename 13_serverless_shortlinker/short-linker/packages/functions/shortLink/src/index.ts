@@ -125,7 +125,7 @@ export async function handler(event: APIGatewayProxyEvent) {
                     ActionAfterCompletion: 'DELETE',
                     Target: {
                         Arn: "arn:aws:lambda:eu-west-1:422412222410:function:anton-short-linker-API-expLinksBC657F0E-KYCNT4i7EQCM",
-                        RoleArn: "arn:aws:iam::422412222410:role/anton-short-linker-API-expLinksServiceRoleB387774F-H7fZwiOWTZT9",
+                        RoleArn: "arn:aws:iam::422412222410:role/anton-short-linker-API-expLinksRole69301015-04lDuXFHLU5Z",
                         Input: JSON.stringify({
                             EventBridgeParameters: [
                                 {

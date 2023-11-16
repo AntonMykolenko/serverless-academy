@@ -1,16 +1,30 @@
 import { StackContext, Api, use, Function, Auth } from "sst/constructs";
 import { StorageStack } from "./StorageStack";
+import * as iam from "aws-cdk-lib/aws-iam";
 
 export function API({ stack }: StackContext) {
   const { linksTable, usersTable } = use(StorageStack);
+
+  const role = new iam.Role(stack, "expLinksRole", {
+    assumedBy: new iam.CompositePrincipal(
+      new iam.ServicePrincipal("lambda.amazonaws.com"),
+      new iam.ServicePrincipal("scheduler.amazonaws.com")
+  ),
+  });
+
+  role.addToPolicy(new iam.PolicyStatement({
+    actions: ["dynamodb:*", "events:*", "lambda:*", "scheduler:*"],
+    resources: ['arn:aws:dynamodb:*:*:table/anton-short-linker-shortLink'], 
+    effect: iam.Effect.ALLOW,
+  }));
 
   const expLinks = new Function(stack, "expLinks", {
     runtime: "container",
     handler: "./packages/functions/expLinks",
   });
   expLinks.bind([linksTable]);
-  expLinks.attachPermissions(["dynamodb:FullAccess"]);
-  expLinks.attachPermissions(["dynamodb:Scan"]);
+  expLinks.attachPermissions(["dynamodb:FullAccess", "events:FullAccess", "lambda:FullAccess"]);
+ 
 
   const signIn = new Function(stack, "signIn", {
     runtime: "container",
